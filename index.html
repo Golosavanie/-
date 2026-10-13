@@ -2,160 +2,237 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Отчёт по безопасности — stk-96.ru</title>
+<title>Отчёт об оценке защищённости — stk-96.ru</title>
 <style>
-  @page { size: A4; margin: 18mm 16mm 20mm 16mm; }
+  @page { size: A4; margin: 16mm 15mm 18mm 15mm; }
   * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #fff; }
   body {
     font-family: "Segoe UI", "PT Sans", Arial, sans-serif;
-    font-size: 11pt;
+    font-size: 10.5pt;
+    line-height: 1.5;
     color: #1a1a1a;
-    line-height: 1.55;
-    margin: 0;
-    padding: 0;
-    background: #fff;
   }
-  .page { max-width: 800px; margin: 0 auto; padding: 0 10px; }
-  h1, h2, h3, h4 { color: #0d2b45; line-height: 1.25; }
-  h1 { font-size: 22pt; margin: 0 0 6px 0; border-bottom: 3px solid #0d2b45; padding-bottom: 10px; }
-  h2 { font-size: 15pt; margin: 26px 0 10px 0; padding: 6px 0 6px 12px; border-left: 5px solid #0d2b45; background: #f4f6f9; }
-  h3 { font-size: 12.5pt; margin: 18px 0 8px 0; }
-  p { margin: 6px 0 8px 0; text-align: justify; }
-  ul, ol { margin: 6px 0 10px 22px; padding: 0; }
-  li { margin: 4px 0; }
-  code, pre, .mono {
+  .page { max-width: 820px; margin: 0 auto; padding: 0 8px; }
+
+  /* ---------- Typography ---------- */
+  h1 { font-size: 20pt; margin: 0 0 4px 0; color: #0d2b45; letter-spacing: -0.2px; }
+  h2 {
+    font-size: 13.5pt;
+    margin: 24px 0 8px 0;
+    padding: 5px 0 5px 10px;
+    border-left: 4px solid #0d2b45;
+    background: #f3f5f8;
+    color: #0d2b45;
+  }
+  h3 { font-size: 11.5pt; margin: 14px 0 6px 0; color: #0d2b45; }
+  h4 { font-size: 10.5pt; margin: 10px 0 4px 0; color: #333; text-transform: uppercase; letter-spacing: 0.6px; }
+  p { margin: 5px 0 8px 0; text-align: justify; }
+  ul, ol { margin: 4px 0 8px 20px; padding: 0; }
+  li { margin: 3px 0; }
+  code, .mono {
     font-family: "Consolas", "Courier New", monospace;
     font-size: 9.5pt;
+    background: #eef1f4;
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #0d2b45;
   }
+
+  /* ---------- Cover ---------- */
   .cover {
-    text-align: center;
-    padding: 60px 20px 40px 20px;
+    position: relative;
+    padding: 70px 30px 40px 30px;
+    min-height: 900px;
     page-break-after: always;
   }
-  .cover .badge-conf {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 8px 18px;
-    background: #fdecea;
-    color: #b3261e;
-    border: 1px solid #f5c6c3;
-    border-radius: 4px;
-    font-weight: bold;
-    letter-spacing: 1px;
+  .cover .top-rule {
+    border-top: 3px double #0d2b45;
+    margin-bottom: 40px;
   }
-  .cover .meta {
-    margin-top: 40px;
-    text-align: left;
+  .cover .doc-type {
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-size: 9pt;
+    color: #666;
+    margin-bottom: 18px;
+  }
+  .cover .doc-title {
+    font-size: 30pt;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #0d2b45;
+    margin: 0 0 14px 0;
+    letter-spacing: -0.5px;
+  }
+  .cover .doc-sub {
+    font-size: 12pt;
+    color: #444;
+    margin-bottom: 50px;
+  }
+
+  /* Cover hand-drawn circle around target URL */
+  .target-wrap {
+    position: relative;
     display: inline-block;
+    padding: 10px 22px;
+    margin: 6px 0 30px 0;
+  }
+  .target-wrap .target-url {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 15pt;
+    color: #0d2b45;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+  }
+  .target-wrap svg.hand-circle {
+    position: absolute;
+    top: -8px;
+    left: -18px;
+    width: calc(100% + 36px);
+    height: calc(100% + 16px);
+    z-index: 1;
+    overflow: visible;
+  }
+
+  .cover-meta {
+    margin-top: 60px;
     font-size: 10.5pt;
-    color: #333;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 16px 0;
   }
-  .cover .meta td { padding: 3px 12px 3px 0; vertical-align: top; }
-  .cover .meta td:first-child { color: #666; min-width: 130px; }
+  .cover-meta table { width: 100%; border-collapse: collapse; }
+  .cover-meta td { padding: 5px 0; vertical-align: top; }
+  .cover-meta td:first-child { color: #666; width: 180px; }
 
-  .summary-box {
-    border: 1px solid #d7dde5;
-    background: #fafbfc;
+  .cover-footer {
+    position: absolute;
+    bottom: 40px;
+    left: 30px;
+    right: 30px;
+    font-size: 9pt;
+    color: #777;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ---------- Summary box ---------- */
+  .summary {
+    background: #f7f9fb;
+    border: 1px solid #d8dee5;
+    border-left: 4px solid #0d2b45;
     padding: 12px 16px;
-    border-radius: 4px;
-    margin: 14px 0;
+    margin: 12px 0 18px 0;
   }
+  .summary strong { color: #0d2b45; }
 
+  /* ---------- Tables ---------- */
   table.data {
     width: 100%;
     border-collapse: collapse;
-    margin: 12px 0 16px 0;
+    margin: 10px 0 14px 0;
     font-size: 10pt;
   }
   table.data th, table.data td {
-    border: 1px solid #d0d7de;
-    padding: 7px 9px;
+    border: 1px solid #cfd6dd;
+    padding: 6px 9px;
     text-align: left;
     vertical-align: top;
   }
-  table.data th { background: #eef2f6; font-weight: 600; }
+  table.data th { background: #eaeef3; font-weight: 600; color: #0d2b45; }
 
+  table.kv { font-size: 10pt; margin: 8px 0 12px 0; }
+  table.kv td { padding: 3px 12px 3px 0; vertical-align: top; }
+  table.kv td:first-child { color: #555; width: 170px; }
+
+  /* ---------- Severity badges ---------- */
   .sev {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 2px 9px;
     border-radius: 3px;
     font-weight: 700;
-    font-size: 9pt;
-    letter-spacing: 0.4px;
+    font-size: 8.5pt;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    border: 1px solid transparent;
   }
-  .sev.critical { background: #7a0d0d; color: #fff; }
-  .sev.high     { background: #d93025; color: #fff; }
-  .sev.medium   { background: #f5a623; color: #1a1a1a; }
-  .sev.low      { background: #4a90e2; color: #fff; }
-  .sev.info     { background: #e0e0e0; color: #333; }
+  .sev.crit { background: #7a0d0d; color: #fff; }
+  .sev.high { background: #d93025; color: #fff; }
+  .sev.med  { background: #f5a623; color: #1a1a1a; }
+  .sev.low  { background: #4a90e2; color: #fff; }
+  .sev.info { background: #e0e0e0; color: #333; }
 
-  /* Marker-style red highlight */
-  .marker {
-    background: linear-gradient(transparent 20%, rgba(255, 60, 60, 0.35) 20%, rgba(255, 60, 60, 0.35) 88%, transparent 88%);
-    padding: 0 3px;
-    border-radius: 2px;
-    font-weight: 600;
-    color: #5a0000;
-  }
-  .marker-block {
-    display: block;
-    background: linear-gradient(transparent 15%, rgba(255, 60, 60, 0.28) 15%, rgba(255, 60, 60, 0.28) 90%, transparent 90%);
-    padding: 2px 6px;
-    margin: 2px -6px;
-    border-radius: 2px;
-    color: #5a0000;
-    font-weight: 600;
-  }
-
+  /* ---------- Terminal ---------- */
   .terminal {
     background: #0f1720;
     color: #d6deeb;
-    border-radius: 4px;
+    border-radius: 3px;
     padding: 10px 14px;
-    margin: 10px 0;
+    margin: 8px 0 12px 0;
     overflow-x: auto;
     white-space: pre-wrap;
     word-break: break-word;
-    line-height: 1.4;
+    line-height: 1.45;
+    font-family: "Consolas", "Courier New", monospace;
     font-size: 9pt;
     border: 1px solid #1f2a37;
   }
-  .terminal .prompt { color: #7bd88f; }
-  .terminal .out    { color: #d6deeb; }
-  .terminal .warn   { color: #f5a623; }
-  .terminal .crit   { color: #ff6b6b; font-weight: bold; }
-  .terminal .dim    { color: #8a98a8; }
+  .terminal .p { color: #7bd88f; }
+  .terminal .c { color: #ff6b6b; font-weight: bold; }
+  .terminal .w { color: #f5a623; }
+  .terminal .d { color: #8a98a8; }
 
+  /* ---------- Evidence block with hand-drawn marker ---------- */
   .evidence {
-    border: 1px solid #d0d7de;
+    position: relative;
+    border: 1px solid #cfd6dd;
     border-left: 4px solid #d93025;
     background: #fff;
     padding: 10px 14px;
     margin: 12px 0;
-    border-radius: 3px;
+    border-radius: 2px;
   }
-  .evidence .label {
-    font-size: 9pt;
-    color: #666;
+  .evidence .ev-label {
+    font-size: 8.5pt;
+    color: #888;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 4px;
+    letter-spacing: 1.2px;
+    margin-bottom: 5px;
   }
 
-  .page-break { page-break-before: always; }
-  .no-print { display: none; }
-  footer.report-footer {
-    margin-top: 40px;
-    padding-top: 10px;
-    border-top: 1px solid #ccc;
-    font-size: 9pt;
-    color: #777;
-    text-align: center;
+  /* Hand-drawn red circle (SVG overlay) */
+  .hand-annot {
+    position: relative;
+    display: inline-block;
+    padding: 0 2px;
+  }
+  .hand-annot svg {
+    position: absolute;
+    top: -6px;
+    left: -8px;
+    width: calc(100% + 16px);
+    height: calc(100% + 12px);
+    pointer-events: none;
+    overflow: visible;
   }
 
-  .kv { font-size: 10pt; }
-  .kv td { padding: 4px 10px 4px 0; vertical-align: top; }
-  .kv td:first-child { color: #555; width: 200px; }
+  .marker-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .marker-underline svg {
+    position: absolute;
+    left: -4px;
+    bottom: -8px;
+    width: calc(100% + 8px);
+    height: 14px;
+    overflow: visible;
+    pointer-events: none;
+  }
 
   .callout {
     background: #fff8e1;
@@ -163,383 +240,563 @@
     border-left: 4px solid #f5a623;
     padding: 10px 14px;
     margin: 12px 0;
-    border-radius: 3px;
-    font-size: 10.5pt;
+    font-size: 10pt;
+    border-radius: 2px;
   }
+  .callout strong { color: #8a5a00; }
+
+  .page-break { page-break-before: always; }
+
+  footer.report-footer {
+    margin-top: 30px;
+    padding-top: 8px;
+    border-top: 1px solid #ccc;
+    font-size: 8.5pt;
+    color: #888;
+    text-align: center;
+  }
+
+  /* Page number placeholder for print */
+  .pagenum { display: none; }
 </style>
 </head>
 <body>
 
-<!-- ===================== COVER ===================== -->
+<!-- ======================= COVER ======================= -->
 <section class="cover">
-  <h1>Отчёт об оценке защищённости веб-ресурса</h1>
-  <p style="font-size: 13pt; color:#333; margin-top: 4px;">stk-96.ru</p>
-  <div class="badge-conf">КОНФИДЕНЦИАЛЬНО</div>
+  <div class="top-rule"></div>
+  <div class="doc-type">Отчёт об оценке защищённости</div>
+  <h1 class="doc-title">Анализ защищённости<br>веб-ресурса</h1>
 
-  <table class="meta">
-    <tr><td>Объект:</td><td>https://stk-96.ru</td></tr>
-    <tr><td>Тип работ:</td><td>Пассивная и слабо-активная разведка, проверка конфигурации</td></tr>
-    <tr><td>Дата отчёта:</td><td>13 октября 2026 г.</td></tr>
-    <tr><td>Классификация:</td><td>Внутренний документ заказчика</td></tr>
-    <tr><td>Метод:</td><td>Ручной анализ, PowerShell 5.1, HTTP(S) запросы без эксплуатации</td></tr>
+  <div class="target-wrap">
+    <span class="target-url">https://stk-96.ru</span>
+    <svg class="hand-circle" viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="rough1" x="-10%" y="-10%" width="120%" height="120%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" seed="7" result="noise"/>
+          <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+      </defs>
+      <path d="M 18,42
+               C 22,14 90,6 200,5
+               C 310,4 386,12 389,36
+               C 392,58 320,74 210,75
+               C 100,76 22,68 16,44
+               C 14,36 16,26 24,20"
+            fill="none" stroke="#d93025" stroke-width="2.4"
+            stroke-linecap="round" filter="url(#rough1)" opacity="0.9"/>
+    </svg>
+  </div>
+
+  <div class="doc-sub">Пассивная и слабо-активная разведка. Проверка конфигурации,<br>
+  анализ открытых интерфейсов, идентификация компонентов CMS.</div>
+
+  <div class="cover-meta">
+    <table>
+      <tr><td>Объект исследования:</td><td><strong>https://stk-96.ru</strong></td></tr>
+      <tr><td>Тип работ:</td><td>Внешний аудит, black-box</td></tr>
+      <tr><td>Дата проведения:</td><td>13 октября 2026 г.</td></tr>
+      <tr><td>Исполнитель:</td><td>Специалист по информационной безопасности</td></tr>
+      <tr><td>Методы:</td><td>Ручной анализ, PowerShell 5.1, HTTP(S)-запросы</td></tr>
+      <tr><td>Ограничения:</td><td>Без эксплуатации уязвимостей и нагрузки на ресурс</td></tr>
+    </table>
+  </div>
+
+  <div class="cover-footer">
+    <span>Подготовлено для внутреннего использования заказчиком</span>
+    <span>Стр. 1</span>
+  </div>
+</section>
+
+<!-- ======================= TOC / SUMMARY ======================= -->
+<section class="page">
+  <h2>Резюме для руководства</h2>
+
+  <div class="summary">
+    В ходе работ подтверждена <strong>публично доступная утечка журнала отладки WordPress</strong>,
+    содержащего полные серверные пути и внутренние имена файлов CMS. Дополнительно выявлены:
+    устаревшая версия интерпретатора PHP, отсутствие базовых защитных HTTP-заголовков,
+    раскрытие логина администратора через REST API и отсутствие двухфакторной
+    аутентификации на форме входа.
+
+    <br><br>
+
+    Критических уязвимостей класса RCE, SQL-инъекций, обхода аутентификации
+    в рамках согласованного объёма не обнаружено.
+  </div>
+
+  <h3>Сводная таблица находок</h3>
+  <table class="data">
+    <thead>
+      <tr>
+        <th style="width: 6%;">№</th>
+        <th style="width: 14%;">Уровень</th>
+        <th>Находка</th>
+        <th style="width: 18%;">Адрес</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><span class="sev crit">Critical</span></td>
+        <td>Публично доступный журнал отладки WordPress</td>
+        <td><code>/wp-content/debug.log</code></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><span class="sev high">High</span></td>
+        <td>Устаревшая версия PHP 8.1.34 (End of Life)</td>
+        <td><code>X-Powered-By</code></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="sev med">Medium</span></td>
+        <td>Раскрытие списка пользователей через REST API</td>
+        <td><code>/wp-json/wp/v2/users</code></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="sev med">Medium</span></td>
+        <td>Отсутствуют заголовки безопасности (6 шт.)</td>
+        <td>HTTP-заголовки</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><span class="sev med">Medium</span></td>
+        <td>Отсутствие двухфакторной аутентификации</td>
+        <td><code>/wp-login.php</code></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><span class="sev low">Low</span></td>
+        <td>Раскрытие версий серверного ПО</td>
+        <td><code>Server</code></td>
+      </tr>
+    </tbody>
   </table>
 
-  <div class="summary-box" style="text-align:left; max-width: 620px; margin: 40px auto 0 auto;">
-    <strong>Резюме.</strong> В ходе работ подтверждена публично доступная утечка журнала отладки
-    WordPress (debug.log), устаревшая версия интерпретатора PHP, отсутствие базовых
-    защитных HTTP-заголовков и раскрытие логина администратора через REST API.
-    Критических уязвимостей класса RCE / SQLi / auth bypass в рамках согласованного
-    объёма не выявлено.
-  </div>
+  <h3>Содержание</h3>
+  <ol>
+    <li>Объём и ограничения работ</li>
+    <li>Методика тестирования</li>
+    <li>Находка № 1 — Публичный журнал отладки</li>
+    <li>Находка № 2 — Устаревший PHP</li>
+    <li>Находка № 3 — Раскрытие пользователей</li>
+    <li>Находка № 4 — Заголовки безопасности</li>
+    <li>Находка № 5 — Отсутствие 2FA</li>
+    <li>Находка № 6 — Версии серверного ПО</li>
+    <li>Приоритеты исправления</li>
+  </ol>
 </section>
 
-<!-- ===================== 1. SCOPE ===================== -->
-<section class="page">
-<h2>1. Объём и ограничения работ</h2>
-<p>
-  Работы проведены в отношении единственного ресурса <code>https://stk-96.ru</code>
-  и его HTTP(S)-интерфейсов. Тестирование выполнялось в пассивном режиме,
-  без эксплуатации уязвимостей, без брутфорса, без нагрузки на ресурс.
-</p>
-<table class="data">
-  <tr><th style="width: 35%;">Разрешено</th><th>Не выполнялось</th></tr>
-  <tr>
-    <td>
-      Чтение публично доступных страниц и файлов.<br>
-      Анализ HTTP-заголовков и TLS.<br>
-      Проверка REST API на доступ без авторизации.<br>
-      Проверка наличия типовых служебных файлов методом HEAD.
-    </td>
-    <td>
-      Подбор паролей, эксплуатация CVE, SQL-инъекции, XSS, RCE.<br>
-      Обход аутентификации, загрузка файлов.<br>
-      DoS-нагрузка, сканирование портов, кроме 80/443.<br>
-      Социальная инженерия.
-    </td>
-  </tr>
-</table>
-
-<h2>2. Методика</h2>
-<ol>
-  <li>Разрешение DNS, проверка доступности TCP/80 и TCP/443.</li>
-  <li>Анализ HTTP-заголовков, TLS-сертификата, политики редиректов.</li>
-  <li>Проверка наличия защитных заголовков безопасности.</li>
-  <li>Идентификация CMS и её компонентов по публичным артефактам.</li>
-  <li>Проверка эндпоинтов REST API на доступ без аутентификации.</li>
-  <li>Проверка доступности служебных и потенциально чувствительных файлов (HEAD).</li>
-  <li>Анализ содержимого обнаруженного файла журнала отладки.</li>
-</ol>
-
-<h2>3. Сводка находок</h2>
-<table class="data">
-  <thead>
-    <tr>
-      <th style="width: 8%;">№</th>
-      <th style="width: 12%;">Уровень</th>
-      <th>Находка</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>1</td><td><span class="sev critical">CRITICAL</span></td><td>Публично доступный журнал отладки wp-content/debug.log</td></tr>
-    <tr><td>2</td><td><span class="sev high">HIGH</span></td><td>Устаревшая версия PHP 8.1.34 (End of Life)</td></tr>
-    <tr><td>3</td><td><span class="sev medium">MEDIUM</span></td><td>Раскрытие списка пользователей через REST API (логин admin)</td></tr>
-    <tr><td>4</td><td><span class="sev medium">MEDIUM</span></td><td>Отсутствуют заголовки безопасности (6 шт.)</td></tr>
-    <tr><td>5</td><td><span class="sev medium">MEDIUM</span></td><td>Отсутствуют признаки двухфакторной аутентификации на форме входа</td></tr>
-    <tr><td>6</td><td><span class="sev low">LOW</span></td><td>Раскрытие версий серверного ПО в заголовках</td></tr>
-  </tbody>
-</table>
-</section>
-
-<!-- ===================== FINDING 1 ===================== -->
+<!-- ======================= 1-2 ======================= -->
 <section class="page page-break">
-<h2>4. Находка № 1 — Публично доступный журнал отладки WordPress</h2>
+  <h2>1. Объём и ограничения работ</h2>
+  <p>
+    Работы проведены в отношении единственного ресурса <code>https://stk-96.ru</code>
+    и его публичных HTTP(S)-интерфейсов. Тестирование выполнялось в щадящем режиме,
+    без эксплуатации уязвимостей, без подбора паролей и без нагрузки на инфраструктуру.
+  </p>
 
-<table class="kv">
-  <tr><td>Уровень риска:</td><td><span class="sev critical">CRITICAL</span></td></tr>
-  <tr><td>Адрес:</td><td><code>https://stk-96.ru/wp-content/debug.log</code></td></tr>
-  <tr><td>Тип:</td><td>CWE-532, CWE-219 (утечка чувствительных данных через публичный файл)</td></tr>
-  <tr><td>Аутентификация:</td><td>не требуется</td></tr>
-</table>
+  <table class="data">
+    <thead>
+      <tr><th style="width: 50%;">Разрешено и выполнено</th><th>Не выполнялось</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          Чтение публично доступных страниц и файлов.<br>
+          Анализ HTTP-заголовков и TLS-сертификата.<br>
+          Проверка REST API на доступ без авторизации.<br>
+          Проверка наличия типовых служебных файлов методом HEAD.<br>
+          Анализ обнаруженного файла журнала отладки.
+        </td>
+        <td>
+          Подбор паролей, эксплуатация CVE.<br>
+          SQL-инъекции, XSS, RCE, SSRF.<br>
+          Обход аутентификации, загрузка файлов.<br>
+          DoS-нагрузка, сканирование портов.<br>
+          Социальная инженерия.
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-<h3>Описание</h3>
-<p>
-  По указанному адресу без аутентификации доступен файл журнала отладки WordPress.
-  Файл активно пополняется с начала сентября 2026 года, на момент проверки его размер
-  превышает 1,1 МБ. Содержимое включает полные серверные пути, названия внутренних
-  файлов ядра CMS, а также фрагменты сообщений об ошибках, возникающих при обработке
-  запросов.
-</p>
+  <h2>2. Методика тестирования</h2>
+  <ol>
+    <li>Разрешение DNS, проверка доступности TCP/80 и TCP/443.</li>
+    <li>Анализ HTTP-заголовков, TLS-сертификата, политики редиректов.</li>
+    <li>Проверка наличия защитных заголовков безопасности.</li>
+    <li>Идентификация CMS и её компонентов по публичным артефактам.</li>
+    <li>Проверка эндпоинтов REST API на доступ без аутентификации.</li>
+    <li>Проверка доступности служебных и потенциально чувствительных файлов.</li>
+    <li>Анализ содержимого обнаруженного файла журнала отладки.</li>
+  </ol>
 
-<div class="callout">
-  <strong>Почему это критично.</strong> Публичный журнал отладки — это готовый источник
-  разведывательных данных для атакующего: точная структура каталогов, версия ядра и
-  компонентов, имена пользователей и фрагменты SQL/сессионных данных. На практике
-  такие файлы используют как первый шаг для подготовки точечной атаки.
-</div>
+  <h3>Использованный инструментарий</h3>
+  <ul>
+    <li>PowerShell 5.1 — отправка HTTP(S)-запросов, анализ заголовков.</li>
+    <li>Resolve-DnsName — разрешение доменных имён.</li>
+    <li>Test-NetConnection — проверка TCP-портов 80 и 443.</li>
+    <li>Invoke-WebRequest / Invoke-RestMethod — чтение публичных ресурсов.</li>
+  </ul>
+</section>
 
-<h3>Воспроизведение</h3>
-<p>Запрос к файлу выполняется обычным GET без каких-либо заголовков:</p>
+<!-- ======================= FINDING 1 ======================= -->
+<section class="page page-break">
+  <h2>3. Находка № 1 — Публично доступный журнал отладки WordPress</h2>
 
-<div class="terminal">
-<span class="prompt">PS&gt;</span> <span class="out">Invoke-WebRequest 'https://stk-96.ru/wp-content/debug.log' -UseBasicParsing -TimeoutSec 10</span>
-<span class="dim">Status:        200</span>
-<span class="dim">Content-Type:  text/plain</span>
-<span class="dim">Length:        1131997</span>
-</div>
+  <table class="kv">
+    <tr><td>Уровень риска:</td><td><span class="sev crit">Critical</span></td></tr>
+    <tr><td>Адрес:</td><td><code>https://stk-96.ru/wp-content/debug.log</code></td></tr>
+    <tr><td>Классификация:</td><td>CWE-532, CWE-219</td></tr>
+    <tr><td>Аутентификация:</td><td>не требуется</td></tr>
+  </table>
 
-<div class="evidence">
-  <div class="label">Фрагмент ответа (первые строки)</div>
-  <div class="terminal">
-<span class="out">[01-Sep-2026 13:26:45 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3
-($subject) of type array|string is deprecated in </span><span class="crit">/home/s/stk96/stk96.beget.tech/public_html/wp-includes/kses.php</span><span class="out"> on line 2025</span>
+  <h3>Описание</h3>
+  <p>
+    По указанному адресу без аутентификации доступен файл журнала отладки WordPress.
+    Файл активно пополняется с 1 сентября 2026 года, на момент проверки его размер
+    превышает 1,1 МБ. Содержимое включает полные серверные пути, названия внутренних
+    файлов ядра CMS, а также сообщения об ошибках уровня <code>PHP Deprecated</code>,
+    <code>PHP Warning</code> и <code>PHP Fatal error</code>.
+  </p>
+
+  <div class="callout">
+    <strong>Почему это критично.</strong> Публичный журнал отладки — готовый источник
+    разведданных: структура каталогов, версия ядра, имена пользователей и фрагменты
+    SQL-запросов. На практике такие файлы используются как первый шаг подготовки
+    точечной атаки.
   </div>
-</div>
 
-<p>
-  В строке журнала выделены следующие чувствительные элементы:
-</p>
-<ul>
-  <li><span class="marker">/home/s/stk96/stk96.beget.tech/public_html/</span> — полный серверный путь и origin-домен хостинга;</li>
-  <li><span class="marker">wp-includes/kses.php</span> — точное расположение файла ядра CMS, раскрывающее версию WordPress;</li>
-  <li><span class="marker">line 2025</span> — номер строки, что позволяет сопоставить код с конкретной версией ядра.</li>
-</ul>
+  <h3>Воспроизведение</h3>
+  <p>Запрос к файлу выполняется обычным GET, без специальных заголовков.</p>
 
-<h3>Влияние</h3>
-<ul>
-  <li>Раскрытие структуры файловой системы и имени хостинг-аккаунта.</li>
-  <li>Возможное раскрытие логина администратора, путей к плагинам и их версий.</li>
-  <li>Наличие в файле строк SQL и токенов (требует дополнительной проверки).</li>
-  <li>Облегчение эксплуатации других, ещё не выявленных уязвимостей (LFI, RFI).</li>
-  <li>Файл обновляется в реальном времени — утечка продолжается.</li>
-</ul>
+  <div class="terminal">
+<span class="p">PS&gt;</span> <span>Invoke-WebRequest 'https://stk-96.ru/wp-content/debug.log' -UseBasicParsing -TimeoutSec 10</span>
+<span class="d">Status:        200</span>
+<span class="d">Content-Type:  text/plain</span>
+<span class="d">Length:        1131997</span>
+  </div>
 
-<h3>Рекомендации</h3>
-<ol>
-  <li>Отключить режим отладки на production в <code>wp-config.php</code>:
-    <div class="terminal"><span class="out">define('WP_DEBUG', false);
+  <div class="evidence">
+    <div class="ev-label">Фрагмент ответа — первые строки журнала</div>
+    <div class="terminal">
+<span>[01-Sep-2026 13:26:45 UTC] PHP Deprecated:  preg_replace(): Passing null to parameter #3 ($subject)</span>
+<span>of type array|string is deprecated in </span><span class="c">/home/s/stk96/stk96.beget.tech/public_html/wp-includes/kses.php</span><span> on line </span><span class="c">2025</span>
+    </div>
+  </div>
+
+  <h4>Чувствительные элементы в ответе</h4>
+  <ul>
+    <li>
+      <span class="hand-annot">
+        /home/s/stk96/stk96.beget.tech/public_html/
+        <svg viewBox="0 0 320 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="r2" x="-20%" y="-40%" width="140%" height="180%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="3"/>
+              <feDisplacementMap in="SourceGraphic" scale="2.2"/>
+            </filter>
+          </defs>
+          <path d="M 6,16 C 40,4 240,3 314,12 C 318,22 260,27 130,28 C 40,28 6,24 4,17"
+                fill="none" stroke="#d93025" stroke-width="2" filter="url(#r2)" opacity="0.85"/>
+        </svg>
+      </span>
+      — полный серверный путь и имя хостинг-аккаунта;
+    </li>
+    <li>
+      <span class="hand-annot">
+        wp-includes/kses.php
+        <svg viewBox="0 0 220 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="r3" x="-20%" y="-40%" width="140%" height="180%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11"/>
+              <feDisplacementMap in="SourceGraphic" scale="2.2"/>
+            </filter>
+          </defs>
+          <path d="M 5,15 C 40,3 170,4 214,12 C 218,22 180,28 100,28 C 30,28 6,24 4,16"
+                fill="none" stroke="#d93025" stroke-width="2" filter="url(#r3)" opacity="0.85"/>
+        </svg>
+      </span>
+      — точное расположение файла ядра, раскрывает версию CMS;
+    </li>
+    <li>
+      <span class="hand-annot">
+        line 2025
+        <svg viewBox="0 0 110 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="r4" x="-20%" y="-40%" width="140%" height="180%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="21"/>
+              <feDisplacementMap in="SourceGraphic" scale="2.2"/>
+            </filter>
+          </defs>
+          <path d="M 4,15 C 20,4 80,4 104,12 C 108,20 80,27 50,28 C 18,28 4,24 3,16"
+                fill="none" stroke="#d93025" stroke-width="2" filter="url(#r4)" opacity="0.85"/>
+        </svg>
+      </span>
+      — номер строки, позволяет сопоставить код с конкретной версией ядра.
+    </li>
+  </ul>
+
+  <h3>Влияние</h3>
+  <ul>
+    <li>Раскрытие структуры файловой системы и имени хостинг-аккаунта.</li>
+    <li>Возможное присутствие в файле логина администратора и путей к плагинам.</li>
+    <li>Возможное присутствие фрагментов SQL-запросов и токенов.</li>
+    <li>Облегчение эксплуатации других, ещё не выявленных уязвимостей (LFI, RFI).</li>
+    <li>Файл продолжает пополняться — утечка носит постоянный характер.</li>
+  </ul>
+
+  <h3>Рекомендации</h3>
+  <ol>
+    <li>Отключить режим отладки на production в <code>wp-config.php</code>:
+      <div class="terminal"><span>define('WP_DEBUG', false);
 define('WP_DEBUG_LOG', false);
 define('WP_DEBUG_DISPLAY', false);
 define('SCRIPT_DEBUG', false);</span></div>
-  </li>
-  <li>Удалить существующий файл <code>wp-content/debug.log</code>.</li>
-  <li>Закрыть на уровне nginx доступ к <code>*.log</code> в каталоге <code>/wp-content/</code>:
-    <div class="terminal"><span class="out">location ~* /wp-content/.*\.log$ { deny all; return 403; }</span></div>
-  </li>
-  <li>Настроить ротацию журналов и вынос их за пределы web-root.</li>
-</ol>
+    </li>
+    <li>Удалить существующий файл <code>wp-content/debug.log</code>.</li>
+    <li>Закрыть на уровне nginx доступ к <code>*.log</code> в каталоге <code>/wp-content/</code>:
+      <div class="terminal"><span>location ~* /wp-content/.*\.log$ { deny all; return 403; }</span></div>
+    </li>
+    <li>Настроить ротацию журналов и вынести их за пределы web-root.</li>
+  </ol>
 </section>
 
-<!-- ===================== FINDING 2 ===================== -->
+<!-- ======================= FINDING 2 ======================= -->
 <section class="page page-break">
-<h2>5. Находка № 2 — Устаревшая версия PHP</h2>
-<table class="kv">
-  <tr><td>Уровень риска:</td><td><span class="sev high">HIGH</span></td></tr>
-  <tr><td>Компонент:</td><td>Интерпретатор PHP</td></tr>
-  <tr><td>Версия:</td><td><code>8.1.34</code></td></tr>
-</table>
+  <h2>4. Находка № 2 — Устаревшая версия PHP</h2>
 
-<h3>Описание</h3>
-<p>
-  Заголовок <code>X-Powered-By</code> в ответе сервера раскрывает точную версию PHP.
-  Ветка 8.1 официально снята с поддержки безопасности 31 декабря 2025 года.
-  С этого момента уязвимости, найденные в данной ветке, не получают патчей.
-</p>
+  <table class="kv">
+    <tr><td>Уровень риска:</td><td><span class="sev high">High</span></td></tr>
+    <tr><td>Компонент:</td><td>Интерпретатор PHP</td></tr>
+    <tr><td>Версия:</td><td><code>8.1.34</code></td></tr>
+    <tr><td>Классификация:</td><td>CWE-1104 (использование неподдерживаемых компонентов)</td></tr>
+  </table>
 
-<div class="terminal">
-<span class="prompt">PS&gt;</span> <span class="out">(Invoke-WebRequest 'https://stk-96.ru' -Method Head -UseBasicParsing).Headers</span>
-<span class="dim">Key           Value</span>
-<span class="dim">Server        nginx-reuseport/1.21.1</span>
-<span class="warn">X-Powered-By  PHP/8.1.34</span>
-</div>
+  <h3>Описание</h3>
+  <p>
+    Заголовок <code>X-Powered-By</code> раскрывает точную версию PHP. Ветка 8.1
+    официально снята с поддержки безопасности 31 декабря 2025 года. С этого момента
+    уязвимости, найденные в данной ветке, не получают патчей.
+  </p>
 
-<p>
-  Обратите внимание: заголовок <span class="marker">X-Powered-By: PHP/8.1.34</span>
-  одновременно и раскрывает версию, и указывает на отсутствие актуальных патчей.
-</p>
+  <div class="terminal">
+<span class="p">PS&gt;</span> <span>(Invoke-WebRequest 'https://stk-96.ru' -Method Head -UseBasicParsing).Headers</span>
+<span class="d">Key           Value</span>
+<span class="d">Server        nginx-reuseport/1.21.1</span>
+<span class="w">X-Powered-By  PHP/8.1.34</span>
+  </div>
 
-<h3>Влияние</h3>
-<ul>
-  <li>Любая новая CVE в PHP 8.1 останется незакрытой.</li>
-  <li>Совместимость с новыми версиями плагинов и ядра WordPress будет ухудшаться.</li>
-  <li>Точная версия раскрыта публично, что упрощает подбор эксплойта.</li>
-</ul>
+  <h3>Влияние</h3>
+  <ul>
+    <li>Любая новая CVE в ветке PHP 8.1 останется незакрытой.</li>
+    <li>Совместимость с новыми версиями ядра WordPress и плагинов будет ухудшаться.</li>
+    <li>Публично раскрыта точная версия — упрощает подбор эксплойта.</li>
+  </ul>
 
-<h3>Рекомендации</h3>
-<ol>
-  <li>Обновить PHP до актуальной стабильной ветки (8.3 или 8.4).</li>
-  <li>Скрыть версию: в <code>php.ini</code> установить <code>expose_php = Off</code>.</li>
-  <li>Убедиться в совместимости плагинов и темы перед обновлением.</li>
-</ol>
+  <h3>Рекомендации</h3>
+  <ol>
+    <li>Обновить PHP до актуальной поддерживаемой ветки (8.3 или 8.4).</li>
+    <li>Скрыть версию: в <code>php.ini</code> установить <code>expose_php = Off</code>.</li>
+    <li>Перед обновлением проверить совместимость плагинов и темы.</li>
+  </ol>
 </section>
 
-<!-- ===================== FINDING 3 ===================== -->
+<!-- ======================= FINDING 3 ======================= -->
 <section class="page page-break">
-<h2>6. Находка № 3 — Раскрытие списка пользователей через REST API</h2>
-<table class="kv">
-  <tr><td>Уровень риска:</td><td><span class="sev medium">MEDIUM</span></td></tr>
-  <tr><td>Адрес:</td><td><code>https://stk-96.ru/wp-json/wp/v2/users</code></td></tr>
-  <tr><td>Тип:</td><td>CWE-200 (раскрытие информации)</td></tr>
-</table>
+  <h2>5. Находка № 3 — Раскрытие списка пользователей через REST API</h2>
 
-<h3>Описание</h3>
-<p>
-  Эндпоинт WordPress REST API возвращает список зарегистрированных пользователей
-  без аутентификации. В ответе раскрывается логин <code>admin</code>, что существенно
-  упрощает подготовку атаки на форму входа.
-</p>
+  <table class="kv">
+    <tr><td>Уровень риска:</td><td><span class="sev med">Medium</span></td></tr>
+    <tr><td>Адрес:</td><td><code>https://stk-96.ru/wp-json/wp/v2/users</code></td></tr>
+    <tr><td>Классификация:</td><td>CWE-200 (раскрытие информации)</td></tr>
+  </table>
 
-<div class="terminal">
-<span class="prompt">PS&gt;</span> <span class="out">Invoke-RestMethod 'https://stk-96.ru/wp-json/wp/v2/users' -UseBasicParsing</span>
-<span class="dim">id   slug    name</span>
-<span class="crit">1    admin   admin</span>
-</div>
+  <h3>Описание</h3>
+  <p>
+    Эндпоинт WordPress REST API возвращает список зарегистрированных пользователей
+    без аутентификации. В ответе раскрывается логин <code>admin</code>, что
+    существенно упрощает подготовку атаки на форму входа.
+  </p>
 
-<p>
-  Дополнительно подтверждено, что <span class="marker">/wp-json/wp/v2/users/me</span>
-  корректно возвращает 401 — то есть защищён. Проблема именно в публичном
-  перечислении пользователей.
-</p>
+  <div class="terminal">
+<span class="p">PS&gt;</span> <span>Invoke-RestMethod 'https://stk-96.ru/wp-json/wp/v2/users' -UseBasicParsing</span>
+<span class="d">id   slug    name</span>
+<span class="c">1    admin   admin</span>
+  </div>
 
-<h3>Влияние</h3>
-<ul>
-  <li>Раскрытие действующего логина администратора.</li>
-  <li>Упрощение брутфорса и password spraying.</li>
-  <li>Возможность таргетированной фишинговой атаки на известного пользователя.</li>
-</ul>
+  <p>
+    Дополнительно подтверждено: <code>/wp-json/wp/v2/users/me</code> корректно
+    возвращает 401 — то есть защищён. Проблема именно в публичном перечислении
+    пользователей.
+  </p>
 
-<h3>Рекомендации</h3>
-<ol>
-  <li>Отключить публичный доступ к списку пользователей:
-    <div class="terminal"><span class="out">add_filter('rest_endpoints', function($endpoints) {
+  <h3>Влияние</h3>
+  <ul>
+    <li>Раскрытие действующего логина администратора.</li>
+    <li>Упрощение брутфорса и password spraying.</li>
+    <li>Возможность таргетированной фишинговой атаки на известного пользователя.</li>
+  </ul>
+
+  <h3>Рекомендации</h3>
+  <ol>
+    <li>Отключить публичный доступ к списку пользователей:
+      <div class="terminal"><span>add_filter('rest_endpoints', function($endpoints) {
     unset($endpoints['/wp/v2/users']);
     unset($endpoints['/wp/v2/users/(?P&lt;id&gt;[\d]+)']);
     return $endpoints;
 });</span></div>
-  </li>
-  <li>Переименовать учётную запись <code>admin</code> на нейтральное имя.</li>
-  <li>Ограничить доступ к REST API для неавторизованных запросов, если API не используется публично.</li>
-</ol>
+    </li>
+    <li>Переименовать учётную запись <code>admin</code> на нейтральное имя.</li>
+    <li>Ограничить доступ к REST API для неавторизованных запросов, если API не используется публично.</li>
+  </ol>
 </section>
 
-<!-- ===================== FINDING 4 ===================== -->
+<!-- ======================= FINDING 4 ======================= -->
 <section class="page page-break">
-<h2>7. Находка № 4 — Отсутствуют заголовки безопасности</h2>
-<table class="kv">
-  <tr><td>Уровень риска:</td><td><span class="sev medium">MEDIUM</span></td></tr>
-  <tr><td>Тип:</td><td>CWE-693 (недостаточная защита механизма)</td></tr>
-</table>
+  <h2>6. Находка № 4 — Отсутствуют заголовки безопасности</h2>
 
-<h3>Описание</h3>
-<p>
-  В ответах сервера отсутствуют шесть базовых защитных заголовков. Это не является
-  прямой уязвимостью, но лишает браузер пользователя ряда встроенных механизмов защиты.
-</p>
+  <table class="kv">
+    <tr><td>Уровень риска:</td><td><span class="sev med">Medium</span></td></tr>
+    <tr><td>Классификация:</td><td>CWE-693 (недостаточная защита механизма)</td></tr>
+  </table>
 
-<table class="data">
-  <thead><tr><th>Заголовок</th><th>Статус</th><th>Роль</th></tr></thead>
-  <tbody>
-    <tr><td>Strict-Transport-Security</td><td><span class="marker">отсутствует</span></td><td>Защита от SSL-stripping</td></tr>
-    <tr><td>Content-Security-Policy</td><td><span class="marker">отсутствует</span></td><td>Снижение риска XSS</td></tr>
-    <tr><td>X-Frame-Options</td><td><span class="marker">отсутствует</span></td><td>Защита от clickjacking</td></tr>
-    <tr><td>X-Content-Type-Options</td><td><span class="marker">отсутствует</span></td><td>Защита от MIME-sniffing</td></tr>
-    <tr><td>Referrer-Policy</td><td><span class="marker">отсутствует</span></td><td>Контроль утечки Referer</td></tr>
-    <tr><td>Permissions-Policy</td><td><span class="marker">отсутствует</span></td><td>Ограничение браузерных API</td></tr>
-  </tbody>
-</table>
+  <h3>Описание</h3>
+  <p>
+    В ответах сервера отсутствуют шесть базовых защитных заголовков. Само по себе
+    это не является прямой уязвимостью, но лишает браузер пользователя ряда
+    встроенных механизмов защиты.
+  </p>
 
-<h3>Рекомендации</h3>
-<p>Добавить заголовки на уровне nginx:</p>
-<div class="terminal"><span class="out">add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+  <table class="data">
+    <thead>
+      <tr><th>Заголовок</th><th>Статус</th><th>Назначение</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Strict-Transport-Security</td><td><span class="hand-annot">отсутствует<svg viewBox="0 0 130 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><filter id="r5" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="33"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs><path d="M 4,15 C 25,4 95,4 124,12 C 128,22 100,27 60,28 C 22,28 5,24 3,16" fill="none" stroke="#d93025" stroke-width="2" filter="url(#r5)" opacity="0.85"/></svg></span></td><td>Защита от SSL-stripping</td></tr>
+      <tr><td>Content-Security-Policy</td><td><span class="hand-annot">отсутствует<svg viewBox="0 0 130 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><filter id="r6" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="44"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs><path d="M 4,15 C 25,4 95,4 124,12 C 128,22 100,27 60,28 C 22,28 5,24 3,16" fill="none" stroke="#d93025" stroke-width="2" filter="url(#r6)" opacity="0.85"/></svg></span></td><td>Снижение риска XSS</td></tr>
+      <tr><td>X-Frame-Options</td><td><span class="hand-annot">отсутствует<svg viewBox="0 0 130 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><filter id="r7" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="55"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs><path d="M 4,15 C 25,4 95,4 124,12 C 128,22 100,27 60,28 C 22,28 5,24 3,16" fill="none" stroke="#d93025" stroke-width="2" filter="url(#r7)" opacity="0.85"/></svg></span></td><td>Защита от clickjacking</td></tr>
+      <tr><td>X-Content-Type-Options</td><td><span class="hand-annot">отсутствует<svg viewBox="0 0 130 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><filter id="r8" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="66"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs><path d="M 4,15 C 25,4 95,4 124,12 C 128,22 100,27 60,28 C 22,28 5,24 3,16" fill="none" stroke="#d93025" stroke-width="2" filter="url(#r8)" opacity="0.85"/></svg></span></td><td>Защита от MIME-sniffing</td></tr>
+      <tr><td>Referrer-Policy</td><td><span class="hand-annot">отсутствует<svg viewBox="0 0 130 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><filter id="r9" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="77"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs><path d="M 4,15 C 25,4 95,4 124,12 C 128,22 100,27 60,28 C 22,28 5,24 3,16" fill="none" stroke="#d93025" stroke-width="2" filter="url(#r9)" opacity="0.85"/></svg></span></td><td>Контроль утечки Referer</td></tr>
+      <tr><td>Permissions-Policy</td><td><span class="hand-annot">отсутствует<svg viewBox="0 0 130 30" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><defs><filter id="r10" x="-20%" y="-40%" width="140%" height="180%"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="88"/><feDisplacementMap in="SourceGraphic" scale="2"/></filter></defs><path d="M 4,15 C 25,4 95,4 124,12 C 128,22 100,27 60,28 C 22,28 5,24 3,16" fill="none" stroke="#d93025" stroke-width="2" filter="url(#r10)" opacity="0.85"/></svg></span></td><td>Ограничение браузерных API</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Рекомендации</h3>
+  <p>Добавить заголовки на уровне nginx:</p>
+  <div class="terminal"><span>add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
 add_header X-Content-Type-Options "nosniff" always;
 add_header X-Frame-Options "SAMEORIGIN" always;
 add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
 add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;" always;</span></div>
-<p>
-  CSP рекомендуется включать в режиме отчёта (<code>Content-Security-Policy-Report-Only</code>)
-  на первой итерации, чтобы не сломать текущую вёрстку.
-</p>
+  <p>
+    CSP рекомендуется включать в режиме отчёта (<code>Content-Security-Policy-Report-Only</code>)
+    на первой итерации, чтобы не сломать текущую вёрстку.
+  </p>
 </section>
 
-<!-- ===================== FINDING 5 ===================== -->
+<!-- ======================= FINDING 5-6 ======================= -->
 <section class="page page-break">
-<h2>8. Находка № 5 — Отсутствие двухфакторной аутентификации</h2>
-<table class="kv">
-  <tr><td>Уровень риска:</td><td><span class="sev medium">MEDIUM</span></td></tr>
-  <tr><td>Адрес:</td><td><code>https://stk-96.ru/wp-login.php</code></td></tr>
-</table>
+  <h2>7. Находка № 5 — Отсутствие двухфакторной аутентификации</h2>
 
-<h3>Описание</h3>
-<p>
-  На форме входа не обнаружено признаков наличия второго фактора. В сочетании
-  с раскрытым логином <code>admin</code> и устаревшей версией PHP это повышает
-  ценность успешной компрометации учётной записи.
-</p>
+  <table class="kv">
+    <tr><td>Уровень риска:</td><td><span class="sev med">Medium</span></td></tr>
+    <tr><td>Адрес:</td><td><code>https://stk-96.ru/wp-login.php</code></td></tr>
+  </table>
 
-<div class="terminal">
-<span class="prompt">PS&gt;</span> <span class="out">$lh = (Invoke-WebRequest 'https://stk-96.ru/wp-login.php' -UseBasicParsing).Content</span>
-<span class="prompt">PS&gt;</span> <span class="out">$lh -match 'two-factor|2fa|otp|authenticator|totp'</span>
-<span class="warn">False</span>
-</div>
+  <h3>Описание</h3>
+  <p>
+    На форме входа не обнаружено признаков наличия второго фактора. В сочетании
+    с раскрытым логином <code>admin</code> и устаревшей версией PHP это повышает
+    ценность успешной компрометации учётной записи.
+  </p>
 
-<h3>Рекомендации</h3>
-<ol>
-  <li>Установить плагин двухфакторной аутентификации (TOTP или WebAuthn).</li>
-  <li>Включить 2FA в первую очередь для всех пользователей с ролью administrator.</li>
-  <li>Дополнительно ограничить доступ к <code>/wp-login.php</code> и <code>/wp-admin/</code> по IP там, где это возможно.</li>
-</ol>
+  <div class="terminal">
+<span class="p">PS&gt;</span> <span>$lh = (Invoke-WebRequest 'https://stk-96.ru/wp-login.php' -UseBasicParsing).Content</span>
+<span class="p">PS&gt;</span> <span>$lh -match 'two-factor|2fa|otp|authenticator|totp'</span>
+<span class="w">False</span>
+  </div>
 
-<h2>9. Находка № 6 — Раскрытие версий серверного ПО</h2>
-<table class="kv">
-  <tr><td>Уровень риска:</td><td><span class="sev low">LOW</span></td></tr>
-</table>
-<p>
-  Заголовки ответа содержат точные версии серверного ПО: <code>nginx-reuseport/1.21.1</code>
-  и <code>PHP/8.1.34</code>. Само по себе это не уязвимость, но упрощает подбор
-  подходящего эксплойта.
-</p>
-<div class="terminal">
-<span class="dim">Server:        </span><span class="warn">nginx-reuseport/1.21.1</span>
-<span class="dim">X-Powered-By:  </span><span class="warn">PHP/8.1.34</span>
-</div>
-<p>Рекомендации: скрыть версии через <code>server_tokens off;</code> в nginx и <code>expose_php = Off</code> в php.ini.</p>
+  <h3>Рекомендации</h3>
+  <ol>
+    <li>Установить плагин двухфакторной аутентификации (TOTP или WebAuthn).</li>
+    <li>Включить 2FA в первую очередь для всех пользователей с ролью administrator.</li>
+    <li>Дополнительно ограничить доступ к <code>/wp-login.php</code> и <code>/wp-admin/</code> по IP.</li>
+  </ol>
+
+  <h2>8. Находка № 6 — Раскрытие версий серверного ПО</h2>
+
+  <table class="kv">
+    <tr><td>Уровень риска:</td><td><span class="sev low">Low</span></td></tr>
+    <tr><td>Классификация:</td><td>CWE-200 (раскрытие информации)</td></tr>
+  </table>
+
+  <p>
+    Заголовки ответа содержат точные версии серверного ПО:
+    <code>nginx-reuseport/1.21.1</code> и <code>PHP/8.1.34</code>. Само по себе
+    это не уязвимость, но упрощает подбор подходящего эксплойта.
+  </p>
+
+  <div class="terminal">
+<span class="d">Server:        </span><span class="w">nginx-reuseport/1.21.1</span>
+<span class="d">X-Powered-By:  </span><span class="w">PHP/8.1.34</span>
+  </div>
+
+  <h3>Рекомендации</h3>
+  <ul>
+    <li>Скрыть версию nginx: <code>server_tokens off;</code> в конфигурации.</li>
+    <li>Скрыть версию PHP: <code>expose_php = Off</code> в <code>php.ini</code>.</li>
+    <li>Убедиться, что nginx обновлён до актуальной стабильной ветки.</li>
+  </ul>
 </section>
 
-<!-- ===================== CONCLUSION ===================== -->
+<!-- ======================= CONCLUSION ======================= -->
 <section class="page page-break">
-<h2>10. Заключение</h2>
-<p>
-  Ресурс <code>stk-96.ru</code> функционирует на устаревшей версии PHP, использует CMS
-  WordPress с публично доступным журналом отладки и не применяет базовые защитные
-  заголовки. Совокупность этих факторов формирует устойчивую поверхность для
-  подготовки целенаправленной атаки. Прямой эксплуатации уязвимостей в рамках
-  согласованного объёма не производилось.
-</p>
+  <h2>9. Заключение и приоритеты исправления</h2>
 
-<h3>Приоритет исправлений</h3>
-<table class="data">
-  <thead><tr><th>Приоритет</th><th>Действие</th></tr></thead>
-  <tbody>
-    <tr><td><span class="sev critical">1</span></td><td>Закрыть доступ к <code>wp-content/debug.log</code> и удалить файл.</td></tr>
-    <tr><td><span class="sev high">2</span></td><td>Обновить PHP до актуальной поддерживаемой версии.</td></tr>
-    <tr><td><span class="sev medium">3</span></td><td>Отключить публичное перечисление пользователей через REST API.</td></tr>
-    <tr><td><span class="sev medium">4</span></td><td>Добавить заголовки безопасности и включить HSTS.</td></tr>
-    <tr><td><span class="sev medium">5</span></td><td>Включить двухфакторную аутентификацию для администраторов.</td></tr>
-    <tr><td><span class="sev low">6</span></td><td>Скрыть версии nginx и PHP.</td></tr>
-  </tbody>
-</table>
+  <p>
+    Ресурс <code>stk-96.ru</code> функционирует на устаревшей версии PHP, использует
+    CMS WordPress с публично доступным журналом отладки и не применяет базовые
+    защитные заголовки. Совокупность этих факторов формирует устойчивую поверхность
+    для подготовки целенаправленной атаки. Прямой эксплуатации уязвимостей в рамках
+    согласованного объёма не производилось.
+  </p>
 
-<h3>Что осталось за рамками</h3>
-<p>
-  В рамках согласованного объёма не проводилось тестирование бизнес-логики,
-  параметров GET/POST на SQLi и XSS, загрузки файлов, а также аудит сторонних
-  плагинов. При необходимости эти направления могут быть согласованы отдельно.
-</p>
+  <table class="data">
+    <thead>
+      <tr><th style="width: 12%;">Очередь</th><th style="width: 16%;">Уровень</th><th>Действие</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>1</td><td><span class="sev crit">Critical</span></td><td>Закрыть доступ к <code>wp-content/debug.log</code> и удалить файл.</td></tr>
+      <tr><td>2</td><td><span class="sev high">High</span></td><td>Обновить PHP до актуальной поддерживаемой версии.</td></tr>
+      <tr><td>3</td><td><span class="sev med">Medium</span></td><td>Отключить публичное перечисление пользователей через REST API.</td></tr>
+      <tr><td>4</td><td><span class="sev med">Medium</span></td><td>Добавить заголовки безопасности и включить HSTS.</td></tr>
+      <tr><td>5</td><td><span class="sev med">Medium</span></td><td>Включить двухфакторную аутентификацию для администраторов.</td></tr>
+      <tr><td>6</td><td><span class="sev low">Low</span></td><td>Скрыть версии nginx и PHP.</td></tr>
+    </tbody>
+  </table>
 
-<footer class="report-footer">
-  Отчёт подготовлен для внутреннего использования владельца ресурса.
-  Документ не подлежит публичному распространению без письменного согласия владельца ресурса.
-</footer>
+  <h3>Что осталось за рамками работ</h3>
+  <p>
+    В рамках согласованного объёма не проводилось тестирование бизнес-логики,
+    параметров GET/POST на SQL-инъекции и XSS, загрузки файлов, а также аудит
+    сторонних плагинов и тем. При необходимости эти направления могут быть
+    согласованы отдельно.
+  </p>
+
+  <h3>Повторная проверка</h3>
+  <p>
+    После устранения находок рекомендуется повторная проверка в объёме,
+    аналогичном настоящему отчёту, для подтверждения корректности исправлений.
+  </p>
+
+  <footer class="report-footer">
+    Отчёт подготовлен для внутреннего использования владельца.<br>
+    Документ не подлежит публичному распространению без письменного согласия владельца ресурса.
+  </footer>
 </section>
 
 </body>
